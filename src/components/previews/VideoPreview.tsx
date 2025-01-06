@@ -6,7 +6,7 @@ import { useTranslation } from 'next-i18next'
 
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import Plyr from 'plyr-react'
+import dynamic from 'next/dynamic'
 import { useAsync } from 'react-async-hook'
 import { useClipboard } from 'use-clipboard-copy'
 
@@ -22,6 +22,9 @@ import CustomEmbedLinkMenu from '../CustomEmbedLinkMenu'
 
 import 'plyr-react/plyr.css'
 
+// Dynamically import Plyr to skip SSR
+const Plyr = dynamic(() => import('plyr-react'), { ssr: false })
+
 const VideoPlayer: FC<{
   videoName: string
   videoUrl: string
@@ -33,26 +36,28 @@ const VideoPlayer: FC<{
   mpegts: any
 }> = ({ videoName, videoUrl, width, height, thumbnail, subtitle, isFlv, mpegts }) => {
   useEffect(() => {
-    // Really really hacky way to inject subtitles as file blobs into the video element
-    axios
-      .get(subtitle, { responseType: 'blob' })
-      .then(resp => {
-        const track = document.querySelector('track')
-        track?.setAttribute('src', URL.createObjectURL(resp.data))
-      })
-      .catch(() => {
-        console.log('Could not load subtitle.')
-      })
+    if (typeof window !== 'undefined') {
+      // Inject subtitles as file blobs into the video element
+      axios
+        .get(subtitle, { responseType: 'blob' })
+        .then(resp => {
+          const track = document.querySelector('track')
+          track?.setAttribute('src', URL.createObjectURL(resp.data))
+        })
+        .catch(() => {
+          console.log('Could not load subtitle.')
+        })
 
-    if (isFlv) {
-      const loadFlv = () => {
-        // Really hacky way to get the exposed video element from Plyr
-        const video = document.getElementById('plyr')
-        const flv = mpegts.createPlayer({ url: videoUrl, type: 'flv' })
-        flv.attachMediaElement(video)
-        flv.load()
+      if (isFlv) {
+        const loadFlv = () => {
+          // Get the exposed video element from Plyr
+          const video = document.getElementById('plyr')
+          const flv = mpegts.createPlayer({ url: videoUrl, type: 'flv' })
+          flv.attachMediaElement(video)
+          flv.load()
+        }
+        loadFlv()
       }
-      loadFlv()
     }
   }, [videoUrl, isFlv, mpegts, subtitle])
 
@@ -68,7 +73,7 @@ const VideoPlayer: FC<{
     fullscreen: { iosNative: true },
   }
   if (!isFlv) {
-    // If the video is not in flv format, we can use the native plyr and add sources directly with the video URL
+    // Add sources directly with the video URL if not in flv format
     plyrSource['sources'] = [{ src: videoUrl }]
   }
   return <Plyr id="plyr" source={plyrSource as Plyr.SourceInfo} options={plyrOptions} />
