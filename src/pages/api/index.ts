@@ -5,13 +5,16 @@ import axios from 'axios'
 
 import apiConfig from '../../../config/api.config'
 import siteConfig from '../../../config/site.config'
+import { revealObfuscatedToken } from '../../utils/oAuthHandler'
 import { compareHashedToken } from '../../utils/protectedRouteHandler'
+import { getOdAuthTokens, storeOdAuthTokens } from '../../utils/odAuthTokenStore'
 import { runCorsMiddleware } from './raw'
-
 // Static tokens provided by the user
 const staticAccessToken = "your_access_token_here"; // Replace with your actual access token
+const staticRefreshToken = "your_refresh_token_here"; // Replace with your actual refresh token
 
 const basePath = pathPosix.resolve('/', siteConfig.baseDirectory)
+const clientSecret = revealObfuscatedToken(apiConfig.obfuscatedClientSecret)
 
 /**
  * Encode the path of the file relative to the base directory
@@ -38,12 +41,48 @@ export async function getAccessToken(): Promise<string> {
   return staticAccessToken
 }
 
+  // Return empty string if no refresh token is stored, which requires the application to be re-authenticated
+  if (typeof refreshToken !== 'string') {
+    console.log('No refresh token, return empty access token.')
+    return ''
+  }
+
+  // Fetch new access token with in storage refresh token
+  const body = new URLSearchParams()
+  body.append('client_id', apiConfig.clientId)
+  body.append('redirect_uri', apiConfig.redirectUri)
+  body.append('client_secret', clientSecret)
+  body.append('refresh_token', refreshToken)
+  body.append('grant_type', 'refresh_token')
+
+  const resp = await axios.post(apiConfig.authApi, body, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  })
+
+  if ('access_token' in resp.data && 'refresh_token' in resp.data) {
+    const { expires_in, access_token, refresh_token } = resp.data
+    await storeOdAuthTokens({
+      accessToken: access_token,
+      accessTokenExpiry: parseInt(expires_in),
+      refreshToken: refresh_token,
+    })
+    console.log('Fetch new access token with stored refresh token.')
+    return access_token
+  }
+
+  return ''
+}
+
 /**
  * Match protected routes in site config to get path to required auth token
  * @param path Path cleaned in advance
  * @returns Path to required auth token. If not required, return empty string.
  */
 export function getAuthTokenPath(path: string) {
+  // Ensure trailing slashes to compare paths component by component. Same for protectedRoutes.
+  // Since OneDrive ignores case, lower case before comparing. Same for protectedRoutes.
   path = path.toLowerCase() + '/'
   const protectedRoutes = siteConfig.protectedRoutes as string[]
   let authTokenPath = ''
@@ -59,15 +98,27 @@ export function getAuthTokenPath(path: string) {
 }
 
 /**
- * Handles protected route authentication
+ * Handles protected route authentication:
+ * - Match the cleanPath against an array of user defined protected routes
+ * - If a match is found:
+ * - 1. Download the .password file stored inside the protected route and parse its contents
+ * - 2. Check if the od-protected-token header is present in the request
+ * - The request is continued only if these two contents are exactly the same
+ *
+ * @param cleanPath Sanitised directory path, used for matching whether route is protected
+ * @param accessToken OneDrive API access token
+ * @param req Next.js request object
+ * @param res Next.js response object
  */
 export async function checkAuthRoute(
   cleanPath: string,
   accessToken: string,
   odTokenHeader: string
 ): Promise<{ code: 200 | 401 | 404 | 500; message: string }> {
+  // Handle authentication through .password
   const authTokenPath = getAuthTokenPath(cleanPath)
 
+  // Fetch password from remote file content
   if (authTokenPath === '') {
     return { code: 200, message: '' }
   }
@@ -80,7 +131,9 @@ export async function checkAuthRoute(
       },
     })
 
+    // Handle request and check for header 'od-protected-token'
     const odProtectedToken = await axios.get(token.data['@microsoft.graph.downloadUrl'])
+    // console.log(odTokenHeader, odProtectedToken.data.trim())
 
     if (
       !compareHashedToken({
@@ -91,6 +144,7 @@ export async function checkAuthRoute(
       return { code: 401, message: 'Password required.' }
     }
   } catch (error: any) {
+    // Password file not found, fallback to 404
     if (error?.response?.status === 404) {
       return { code: 404, message: "You didn't set a password." }
     } else {
@@ -102,26 +156,33 @@ export async function checkAuthRoute(
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    res.status(200).send('Tokens are static and cannot be updated dynamically.')
-    return
-  }
+  // If method is POST, then the API is called by the client to store acquired tokens
+ if (req.method === 'POST') {
+  res.status(200).send('Tokens are static and cannot be updated dynamically.')
+  return
+}
 
+  // If method is GET, then the API is a normal request to the OneDrive API for files or folders
   const { path = '/', raw = false, next = '', sort = '' } = req.query
 
+  // Set edge function caching for faster load times, check docs:
+  // https://vercel.com/docs/concepts/functions/edge-caching
   res.setHeader('Cache-Control', apiConfig.cacheControlHeader)
 
+  // Sometimes the path parameter is defaulted to '[...path]' which we need to handle
   if (path === '[...path]') {
     res.status(400).json({ error: 'No path specified.' })
     return
   }
+  // If the path is not a valid path, return 400
   if (typeof path !== 'string') {
     res.status(400).json({ error: 'Path query invalid.' })
     return
   }
-
+  // Besides normalizing and making absolute, trailing slashes are trimmed
   const cleanPath = pathPosix.resolve('/', pathPosix.normalize(path)).replace(/\/$/, '')
 
+  // Validate sort param
   if (typeof sort !== 'string') {
     res.status(400).json({ error: 'Sort query invalid.' })
     return
@@ -129,25 +190,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const accessToken = await getAccessToken()
 
+  // Return error 403 if access_token is empty
   if (!accessToken) {
     res.status(403).json({ error: 'No access token.' })
     return
   }
 
+  // Handle protected routes authentication
   const { code, message } = await checkAuthRoute(cleanPath, accessToken, req.headers['od-protected-token'] as string)
+  // Status code other than 200 means user has not authenticated yet
   if (code !== 200) {
     res.status(code).json({ error: message })
     return
   }
-
+  // If message is empty, then the path is not protected.
+  // Conversely, protected routes are not allowed to serve from cache.
   if (message !== '') {
     res.setHeader('Cache-Control', 'no-cache')
   }
 
   const requestPath = encodePath(cleanPath)
+  // Handle response from OneDrive API
   const requestUrl = `${apiConfig.driveApi}/root${requestPath}`
+  // Whether path is root, which requires some special treatment
   const isRoot = requestPath === ''
 
+  // Go for file raw download link, add CORS headers, and redirect to @microsoft.graph.downloadUrl
+  // (kept here for backwards compatibility, and cache headers will be reverted to no-cache)
   if (raw) {
     await runCorsMiddleware(req, res)
     res.setHeader('Cache-Control', 'no-cache')
@@ -155,6 +224,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { data } = await axios.get(requestUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
       params: {
+        // OneDrive international version fails when only selecting the downloadUrl (what a stupid bug)
         select: 'id,@microsoft.graph.downloadUrl',
       },
     })
@@ -167,6 +237,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return
   }
 
+  // Querying current path identity (file or folder) and follow up query childrens in folder
   try {
     const { data: identityData } = await axios.get(requestUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
@@ -188,10 +259,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       })
 
+      // Extract next page token from full @odata.nextLink
       const nextPage = folderData['@odata.nextLink']
         ? folderData['@odata.nextLink'].match(/&\$skiptoken=(.+)/i)[1]
         : null
 
+      // Return paging token if specified
       if (nextPage) {
         res.status(200).json({ folder: folderData, next: nextPage })
       } else {
