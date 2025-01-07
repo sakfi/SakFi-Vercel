@@ -9,9 +9,6 @@ import { revealObfuscatedToken } from '../../utils/oAuthHandler'
 import { compareHashedToken } from '../../utils/protectedRouteHandler'
 import { getOdAuthTokens, storeOdAuthTokens } from '../../utils/odAuthTokenStore'
 import { runCorsMiddleware } from './raw'
-// Static tokens provided by the user
-const staticAccessToken = "your_access_token_here"; // Replace with your actual access token
-const staticRefreshToken = "your_refresh_token_here"; // Replace with your actual refresh token
 
 const basePath = pathPosix.resolve('/', siteConfig.baseDirectory)
 const clientSecret = revealObfuscatedToken(apiConfig.obfuscatedClientSecret)
@@ -32,14 +29,18 @@ export function encodePath(path: string): string {
 }
 
 /**
- * Fetch the access token from static tokens provided
+ * Fetch the access token from Redis storage and check if the token requires a renew
  *
  * @returns Access token for OneDrive API
  */
 export async function getAccessToken(): Promise<string> {
-  console.log('Using static access token.')
-  return staticAccessToken
-}
+  const { accessToken, refreshToken } = await getOdAuthTokens()
+
+  // Return in storage access token if it is still valid
+  if (typeof accessToken === 'string') {
+    console.log('Fetch access token from storage.')
+    return accessToken
+  }
 
   // Return empty string if no refresh token is stored, which requires the application to be re-authenticated
   if (typeof refreshToken !== 'string') {
@@ -157,10 +158,20 @@ export async function checkAuthRoute(
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // If method is POST, then the API is called by the client to store acquired tokens
- if (req.method === 'POST') {
-  res.status(200).send('Tokens are static and cannot be updated dynamically.')
-  return
-}
+  if (req.method === 'POST') {
+    const { obfuscatedAccessToken, accessTokenExpiry, obfuscatedRefreshToken } = req.body
+    const accessToken = revealObfuscatedToken(obfuscatedAccessToken)
+    const refreshToken = revealObfuscatedToken(obfuscatedRefreshToken)
+
+    if (typeof accessToken !== 'string' || typeof refreshToken !== 'string') {
+      res.status(400).send('Invalid request body')
+      return
+    }
+
+    await storeOdAuthTokens({ accessToken, accessTokenExpiry, refreshToken })
+    res.status(200).send('OK')
+    return
+  }
 
   // If method is GET, then the API is a normal request to the OneDrive API for files or folders
   const { path = '/', raw = false, next = '', sort = '' } = req.query
