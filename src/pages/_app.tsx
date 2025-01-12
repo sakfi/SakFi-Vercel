@@ -2,12 +2,9 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 
 import '../styles/globals.css'
 import '../styles/markdown-github.css'
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/react'
 import SpeedInsights from "@vercel/speed-insights";
-;
 
-// Require had to be used to prevent SSR failure in Next.js
-// Related discussion: https://github.com/FortAwesome/Font-Awesome/issues/19348
 const { library, config } = require('@fortawesome/fontawesome-svg-core')
 config.autoAddCss = false
 
@@ -31,6 +28,7 @@ import {
   faFlag,
   faCheckCircle,
 } from '@fortawesome/free-regular-svg-icons'
+
 import {
   faSearch,
   faPen,
@@ -61,13 +59,14 @@ import {
   faHome,
   faLanguage,
 } from '@fortawesome/free-solid-svg-icons'
+
 import * as Icons from '@fortawesome/free-brands-svg-icons'
 
 import type { AppProps } from 'next/app'
 import NextNProgress from 'nextjs-progressbar'
 import { appWithTranslation } from 'next-i18next'
 
-// import all brand icons with tree-shaking so all icons can be referenced in the app
+// Import all brand icons with tree-shaking
 const iconList = Object.keys(Icons)
   .filter(k => k !== 'fab' && k !== 'prefix')
   .map(icon => Icons[icon])
@@ -125,10 +124,12 @@ library.add(
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
+      <SpeedInsights /> {/* Add SpeedInsights here */}
       <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
       <Analytics />
       <Component {...pageProps} />
     </>
   )
 }
+
 export default appWithTranslation(MyApp)
