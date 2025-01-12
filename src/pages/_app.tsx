@@ -1,12 +1,13 @@
-import '@fortawesome/fontawesome-svg-core/styles.css'
+import '@fortawesome/fontawesome-svg-core/styles.css';
+import '../styles/globals.css';
+import '../styles/markdown-github.css';
 
-import '../styles/globals.css'
-import '../styles/markdown-github.css'
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/react';
 import SpeedInsights from "@vercel/speed-insights/next";
-
-const { library, config } = require('@fortawesome/fontawesome-svg-core')
-config.autoAddCss = false
+import { library, config } from '@fortawesome/fontawesome-svg-core';
+import type { AppProps } from 'next/app';
+import NextNProgress from 'nextjs-progressbar';
+import { appWithTranslation } from 'next-i18next';
 
 import {
   faFileImage,
@@ -27,7 +28,7 @@ import {
   faEnvelope,
   faFlag,
   faCheckCircle,
-} from '@fortawesome/free-regular-svg-icons'
+} from '@fortawesome/free-regular-svg-icons';
 
 import {
   faSearch,
@@ -58,18 +59,15 @@ import {
   faThList,
   faHome,
   faLanguage,
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
 
-import * as Icons from '@fortawesome/free-brands-svg-icons'
+import * as Icons from '@fortawesome/free-brands-svg-icons';
 
-import type { AppProps } from 'next/app'
-import NextNProgress from 'nextjs-progressbar'
-import { appWithTranslation } from 'next-i18next'
+config.autoAddCss = false;
 
-// Import all brand icons with tree-shaking
 const iconList = Object.keys(Icons)
   .filter(k => k !== 'fab' && k !== 'prefix')
-  .map(icon => Icons[icon])
+  .map(icon => Icons[icon]);
 
 library.add(
   faFileImage,
@@ -83,13 +81,7 @@ library.add(
   faFileCode,
   faFileAlt,
   faFile,
-  faFlag,
   faFolder,
-  faMusic,
-  faArrowLeft,
-  faArrowRight,
-  faAngleRight,
-  faFileDownload,
   faCopy,
   faCopySolid,
   faPlus,
@@ -119,17 +111,17 @@ library.add(
   faLanguage,
   faPen,
   ...iconList
-)
+);
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <SpeedInsights /> {/* Add SpeedInsights here */}
+      <SpeedInsights />
       <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
       <Analytics />
       <Component {...pageProps} />
     </>
-  )
+  );
 }
 
-export default appWithTranslation(MyApp)
+export default appWithTranslation(MyApp);
