@@ -25,13 +25,16 @@ importers:
         version: 0.2.0(@fortawesome/fontawesome-svg-core@6.2.1)(react@18.2.0)
       '@headlessui/react':
         specifier: ^1.7.8
-        version: 1.7.8(react-dom@18.2.0)(react@18.2.0)
+        version: 1.7.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@tailwindcss/line-clamp':
         specifier: ^0.4.2
-        version: 0.4.2(tailwindcss@3.2.4)
+        version: 0.4.2(tailwindcss@3.2.4(postcss@8.4.21))
       '@vercel/analytics':
         specifier: ^1.0.1
         version: 1.0.1
+      '@vercel/speed-insights':
+        specifier: ^1.1.0
+        version: 1.1.0(next@13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       awesome-debounce-promise:
         specifier: ^2.1.0
         version: 2.1.0
@@ -67,13 +70,13 @@ importers:
         version: 1.7.2
       next:
         specifier: ^13.1.6
-        version: 13.1.6(react-dom@18.2.0)(react@18.2.0)
+        version: 13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       next-i18next:
         specifier: ^13.0.3
-        version: 13.0.3(i18next@22.4.9)(next@13.1.6)(react-i18next@12.1.4)(react@18.2.0)
+        version: 13.0.3(i18next@22.4.9)(next@13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-i18next@12.1.4(i18next@22.4.9)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       nextjs-progressbar:
         specifier: ^0.0.16
-        version: 0.0.16(next@13.1.6)(react@18.2.0)
+        version: 0.0.16(next@13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)
       plyr-react:
         specifier: ^5.1.2
         version: 5.1.2(plyr@3.7.3)(react@18.2.0)
@@ -88,7 +91,7 @@ importers:
         version: 4.0.0(react@18.2.0)
       react-audio-player:
         specifier: ^0.17.0
-        version: 0.17.0(react-dom@18.2.0)(react@18.2.0)
+        version: 0.17.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-cookie:
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
@@ -100,13 +103,13 @@ importers:
         version: 18.2.0(react@18.2.0)
       react-hot-toast:
         specifier: ^2.4.0
-        version: 2.4.0(csstype@3.1.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.4.0(csstype@3.1.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-hotkeys-hook:
         specifier: ^4.3.3
-        version: 4.3.3(react-dom@18.2.0)(react@18.2.0)
+        version: 4.3.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-i18next:
         specifier: ^12.1.4
-        version: 12.1.4(i18next@22.4.9)(react-dom@18.2.0)(react@18.2.0)
+        version: 12.1.4(i18next@22.4.9)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-markdown:
         specifier: ^8.0.5
         version: 8.0.5(@types/react@18.2.14)(react@18.2.0)
@@ -623,6 +626,29 @@ packages:
 
   '@vercel/analytics@1.0.1':
     resolution: {integrity: sha512-Ux0c9qUfkcPqng3vrR0GTrlQdqNJ2JREn/2ydrVuKwM3RtMfF2mWX31Ijqo1opSjNAq6rK76PwtANw6kl6TAow==}
+
+  '@vercel/speed-insights@1.1.0':
+    resolution: {integrity: sha512-rAXxuhhO4mlRGC9noa5F7HLMtGg8YF1zAN6Pjd1Ny4pII4cerhtwSG4vympbCl+pWkH7nBS9kVXRD4FAn54dlg==}
+    peerDependencies:
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@xmldom/xmldom@0.7.9':
     resolution: {integrity: sha512-yceMpm/xd4W2a85iqZyO09gTnHvXF6pyiWjD2jcOJs7hRoZtNNOO1eJlhHj1ixA+xip2hOyGn+LgcvLCMo5zXA==}
@@ -3197,7 +3223,7 @@ snapshots:
       prop-types: 15.8.1
       react: 18.2.0
 
-  '@headlessui/react@1.7.8(react-dom@18.2.0)(react@18.2.0)':
+  '@headlessui/react@1.7.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       client-only: 0.0.1
       react: 18.2.0
@@ -3289,7 +3315,7 @@ snapshots:
     dependencies:
       tslib: 2.5.0
 
-  '@tailwindcss/line-clamp@0.4.2(tailwindcss@3.2.4)':
+  '@tailwindcss/line-clamp@0.4.2(tailwindcss@3.2.4(postcss@8.4.21))':
     dependencies:
       tailwindcss: 3.2.4(postcss@8.4.21)
 
@@ -3378,6 +3404,7 @@ snapshots:
       '@typescript-eslint/typescript-estree': 5.49.0(typescript@5.1.3)
       debug: 4.3.4
       eslint: 8.43.0
+    optionalDependencies:
       typescript: 5.1.3
     transitivePeerDependencies:
       - supports-color
@@ -3398,6 +3425,7 @@ snapshots:
       is-glob: 4.0.3
       semver: 7.3.8
       tsutils: 3.21.0(typescript@5.1.3)
+    optionalDependencies:
       typescript: 5.1.3
     transitivePeerDependencies:
       - supports-color
@@ -3408,6 +3436,11 @@ snapshots:
       eslint-visitor-keys: 3.4.1
 
   '@vercel/analytics@1.0.1': {}
+
+  '@vercel/speed-insights@1.1.0(next@13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)':
+    optionalDependencies:
+      next: 13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react: 18.2.0
 
   '@xmldom/xmldom@0.7.9': {}
 
@@ -4014,11 +4047,12 @@ snapshots:
       '@typescript-eslint/parser': 5.49.0(eslint@8.43.0)(typescript@5.1.3)
       eslint: 8.43.0
       eslint-import-resolver-node: 0.3.7
-      eslint-import-resolver-typescript: 3.5.3(eslint-plugin-import@2.27.5)(eslint@8.43.0)
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.49.0)(eslint-import-resolver-typescript@3.5.3)(eslint@8.43.0)
+      eslint-import-resolver-typescript: 3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.49.0(eslint@8.43.0)(typescript@5.1.3))(eslint-import-resolver-typescript@3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0))(eslint@8.43.0)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.43.0)
       eslint-plugin-react: 7.32.1(eslint@8.43.0)
       eslint-plugin-react-hooks: 4.6.0(eslint@8.43.0)
+    optionalDependencies:
       typescript: 5.1.3
     transitivePeerDependencies:
       - eslint-import-resolver-webpack
@@ -4036,12 +4070,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.5.3(eslint-plugin-import@2.27.5)(eslint@8.43.0):
+  eslint-import-resolver-typescript@3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0):
     dependencies:
       debug: 4.3.4
       enhanced-resolve: 5.12.0
       eslint: 8.43.0
-      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.49.0)(eslint-import-resolver-typescript@3.5.3)(eslint@8.43.0)
+      eslint-plugin-import: 2.27.5(@typescript-eslint/parser@5.49.0(eslint@8.43.0)(typescript@5.1.3))(eslint-import-resolver-typescript@3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0))(eslint@8.43.0)
       get-tsconfig: 4.3.0
       globby: 13.1.3
       is-core-module: 2.11.0
@@ -4050,19 +4084,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.7.4(@typescript-eslint/parser@5.49.0)(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.3)(eslint@8.43.0):
+  eslint-module-utils@2.7.4(@typescript-eslint/parser@5.49.0(eslint@8.43.0)(typescript@5.1.3))(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0))(eslint@8.43.0):
     dependencies:
-      '@typescript-eslint/parser': 5.49.0(eslint@8.43.0)(typescript@5.1.3)
       debug: 3.2.7
+    optionalDependencies:
+      '@typescript-eslint/parser': 5.49.0(eslint@8.43.0)(typescript@5.1.3)
       eslint: 8.43.0
       eslint-import-resolver-node: 0.3.7
-      eslint-import-resolver-typescript: 3.5.3(eslint-plugin-import@2.27.5)(eslint@8.43.0)
+      eslint-import-resolver-typescript: 3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0)
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.49.0)(eslint-import-resolver-typescript@3.5.3)(eslint@8.43.0):
+  eslint-plugin-import@2.27.5(@typescript-eslint/parser@5.49.0(eslint@8.43.0)(typescript@5.1.3))(eslint-import-resolver-typescript@3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0))(eslint@8.43.0):
     dependencies:
-      '@typescript-eslint/parser': 5.49.0(eslint@8.43.0)(typescript@5.1.3)
       array-includes: 3.1.6
       array.prototype.flat: 1.3.1
       array.prototype.flatmap: 1.3.1
@@ -4070,7 +4104,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.43.0
       eslint-import-resolver-node: 0.3.7
-      eslint-module-utils: 2.7.4(@typescript-eslint/parser@5.49.0)(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.3)(eslint@8.43.0)
+      eslint-module-utils: 2.7.4(@typescript-eslint/parser@5.49.0(eslint@8.43.0)(typescript@5.1.3))(eslint-import-resolver-node@0.3.7)(eslint-import-resolver-typescript@3.5.3(eslint-plugin-import@2.27.5(eslint@8.43.0))(eslint@8.43.0))(eslint@8.43.0)
       has: 1.0.3
       is-core-module: 2.11.0
       is-glob: 4.0.3
@@ -4079,6 +4113,8 @@ snapshots:
       resolve: 1.22.1
       semver: 6.3.0
       tsconfig-paths: 3.14.1
+    optionalDependencies:
+      '@typescript-eslint/parser': 5.49.0(eslint@8.43.0)(typescript@5.1.3)
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
@@ -5239,7 +5275,7 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  next-i18next@13.0.3(i18next@22.4.9)(next@13.1.6)(react-i18next@12.1.4)(react@18.2.0):
+  next-i18next@13.0.3(i18next@22.4.9)(next@13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react-i18next@12.1.4(i18next@22.4.9)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.20.13
       '@types/hoist-non-react-statics': 3.3.1
@@ -5247,13 +5283,13 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       i18next: 22.4.9
       i18next-fs-backend: 2.1.1
-      next: 13.1.6(react-dom@18.2.0)(react@18.2.0)
+      next: 13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react: 18.2.0
-      react-i18next: 12.1.4(i18next@22.4.9)(react-dom@18.2.0)(react@18.2.0)
+      react-i18next: 12.1.4(i18next@22.4.9)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
 
   next-tick@1.1.0: {}
 
-  next@13.1.6(react-dom@18.2.0)(react@18.2.0):
+  next@13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@next/env': 13.1.6
       '@swc/helpers': 0.4.14
@@ -5280,10 +5316,10 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  nextjs-progressbar@0.0.16(next@13.1.6)(react@18.2.0):
+  nextjs-progressbar@0.0.16(next@13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0):
     dependencies:
       '@types/nprogress': 0.2.0
-      next: 13.1.6(react-dom@18.2.0)(react@18.2.0)
+      next: 13.1.6(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       nprogress: 0.2.0
       prop-types: 15.8.1
       react: 18.2.0
@@ -5438,8 +5474,9 @@ snapshots:
   plyr-react@5.1.2(plyr@3.7.3)(react@18.2.0):
     dependencies:
       plyr: 3.7.3
-      react: 18.2.0
       react-aptor: 2.0.0(react@18.2.0)
+    optionalDependencies:
+      react: 18.2.0
 
   plyr@3.7.3:
     dependencies:
@@ -5464,8 +5501,9 @@ snapshots:
   postcss-load-config@3.1.4(postcss@8.4.21):
     dependencies:
       lilconfig: 2.0.6
-      postcss: 8.4.21
       yaml: 1.10.2
+    optionalDependencies:
+      postcss: 8.4.21
 
   postcss-nested@6.0.0(postcss@8.4.21):
     dependencies:
@@ -5555,14 +5593,14 @@ snapshots:
   rangetouch@2.0.1: {}
 
   react-aptor@2.0.0(react@18.2.0):
-    dependencies:
+    optionalDependencies:
       react: 18.2.0
 
   react-async-hook@4.0.0(react@18.2.0):
     dependencies:
       react: 18.2.0
 
-  react-audio-player@0.17.0(react-dom@18.2.0)(react@18.2.0):
+  react-audio-player@0.17.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       prop-types: 15.8.1
       react: 18.2.0
@@ -5587,7 +5625,7 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.0
 
-  react-hot-toast@2.4.0(csstype@3.1.1)(react-dom@18.2.0)(react@18.2.0):
+  react-hot-toast@2.4.0(csstype@3.1.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       goober: 2.1.11(csstype@3.1.1)
       react: 18.2.0
@@ -5595,17 +5633,18 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  react-hotkeys-hook@4.3.3(react-dom@18.2.0)(react@18.2.0):
+  react-hotkeys-hook@4.3.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  react-i18next@12.1.4(i18next@22.4.9)(react-dom@18.2.0)(react@18.2.0):
+  react-i18next@12.1.4(i18next@22.4.9)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.20.13
       html-parse-stringify: 3.0.1
       i18next: 22.4.9
       react: 18.2.0
+    optionalDependencies:
       react-dom: 18.2.0(react@18.2.0)
 
   react-is@16.13.1: {}
