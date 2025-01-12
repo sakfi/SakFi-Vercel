@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="./public/header.png" alt="onedrive-vercel-index (Improved)" />
-  <h3><a href="https://drive.swo.moe">onedrive-vercel-index</a></h3>
+  <img src="./public/header.png" alt="SakFi-Vercel" />
+  <h3><a href="https://drive.swo.moe">SakFi-Vercel</a></h3>
   <p><a href="https://ovi.swo.moe/docs/getting-started">Get started</a> · <a href="https://ovi.swo.moe/blog/whats-new">What's new?</a> · <a href="https://ovi.swo.moe/sponsor/ways">Sponsoring</a></p>
-  <p><em>OneDrive public directory listing, powered by Vercel and Next.js</em></p>
+  <p><em>OneDrive public directory listing, powered by Vercel and Next.js Fixed and updated by SakFi</em></p>
 
   <img src="https://img.shields.io/badge/OneDrive-2C68C3?style=flat&logo=microsoft-onedrive&logoColor=white" alt="OneDrive" />
   <img src="https://img.shields.io/badge/Next.js-black?style=flat&logo=next.js&logoColor=white" alt="Next.js" />
