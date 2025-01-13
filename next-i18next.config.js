@@ -4,6 +4,7 @@ module.exports = {
   i18n: {
     defaultLocale: 'en', // Default language
     locales: ['de-DE', 'en', 'es', 'fr', 'zh-CN', 'hi', 'id', 'tr-TR', 'zh-TW'] // Add 'fr' for French
+    fallbackLng: 'en', // Set fallback language
   },
   localePath: path.resolve('public/locales'),
   reloadOnPrerender: process.env.NODE_ENV === 'development',
