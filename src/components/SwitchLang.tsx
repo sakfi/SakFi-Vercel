@@ -19,6 +19,8 @@ const localeText = (locale: string): string => {
   switch (locale) {
     case 'de-DE':
       return '🇩🇪 Deutsch'
+    case 'bn':
+      return '🇧🇩 বাংলা'; // Add Bangla language
     case 'en':
       return '🇬🇧 English'
     case 'es':
