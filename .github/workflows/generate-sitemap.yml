@@ -4,29 +4,23 @@ on:
   push:
     branches:
       - main
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 16 # Use the appropriate Node.js version for your project
 
       - name: Install Dependencies
-        run: |
-          npm install
+        run: npm install --legacy-peer-deps
 
       - name: Generate Sitemap
-        run: |
-          node generate-sitemap.js
-
-      - name: Deploy to Vercel
-        run: |
-          npx vercel --prod
+        run: npm run generate-sitemap
