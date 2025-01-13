@@ -33,6 +33,8 @@ const localeText = (locale: string): string => {
       return '🇹🇷 Türkçe'
     case 'zh-TW':
       return '🇹🇼 繁體中文'
+    case 'fr':
+      return '🇫🇷 Français'; // Add French here
     default:
       return '🇬🇧 English'
   }
