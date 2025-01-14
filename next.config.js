@@ -11,4 +11,12 @@ module.exports = {
     }
     return config;
   },
+  async rewrites() {
+    return [
+      {
+        source: '/sitemap.xml',
+        destination: '/sitemap',
+      },
+    ];
+  },
 };
