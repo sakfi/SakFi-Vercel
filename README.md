@@ -36,7 +36,7 @@ Please go to our [discussion forum](https://github.com/spencerwooo/onedrive-verc
 
 ## Demo
 
-Live demo at [Spencer's OneDrive](https://drive.swo.moe).
+Live demo at [SakFi's OneDrive](https://sakfi.vercel.app).
 
 ![demo](./public/demo.png)
 
