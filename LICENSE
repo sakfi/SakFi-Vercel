@@ -1,21 +1,38 @@
 MIT License
 
-Copyright (c) 2021 Spencer Woo
+Copyright (c) 2024 SakFi
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is granted, free of charge, to any individual or entity obtaining a copy of this software and associated documentation files (referred to as the "Software"), 
+to engage with the Software without restrictions. This includes, but is not limited to, the rights to:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. Use the Software for any purpose, whether personal, academic, commercial, or otherwise.
+2. Copy and reproduce the Software in any format or medium.
+3. Modify and adapt the Software to suit individual needs or integrate it into other projects.
+4. Merge the Software with other software or systems.
+5. Publish the Software, including any modified versions, to any platform or distribution channel.
+6. Distribute the Software, either in its original or modified form, to any recipients.
+7. Sublicense or grant permissions for others to use the Software.
+8. Sell copies of the Software, either as-is or as part of a larger package or system.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+The above permissions are granted provided that the following conditions are met:
+
+1. The original copyright notice, along with this permission notice, must be included in all copies, significant portions, or substantial derivatives of the Software.
+2. Proper attribution to the original authors or copyright holders must be maintained, ensuring that their contributions are acknowledged.
+
+<b>Disclaimer of Warranties and Limitation of Liability</b>
+The Software is provided "AS IS," meaning it is delivered without any guarantees or warranties of any kind. The authors and copyright holders explicitly disclaim all warranties, including but not limited to:
+
+1. The implied warranties of merchantability: The Software may not meet the quality standards or performance expectations required for commercial purposes.
+2. Fitness for a particular purpose: The Software may not fulfill specific needs or achieve desired results.
+3. Non-infringement: The Software may not be free from intellectual property claims or disputes.
+
+Under no circumstances shall the authors or copyright holders be held liable for any claims, damages, or other liabilities that may arise, including but not limited to:
+
+1. Direct, indirect, incidental, special, exemplary, or consequential damages.
+2. Issues arising from the use, misuse, or inability to use the Software.
+3. Legal claims or disputes resulting from interactions with the Software.
+
+This limitation applies regardless of the nature of the legal theory, whether in contract, tort, or any other legal framework, and even if the authors or copyright holders were advised of the possibility of such damages.
+
+<b>Applicability</b>
+This license applies to all versions, modifications, and distributions of the Software, unless explicitly superseded by a new license agreed upon by the copyright holders.
