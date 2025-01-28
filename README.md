@@ -108,10 +108,11 @@ Live demo at [SakFi's OneDrive](https://sakfi.vercel.app).
 
 Yes! Completely free with no backend server what-so-ever. (Well, we use Redis, but that's free to some extent also.)
 
+<div align="center"><b>
 ## License
 
-[MIT](LICENSE)
-
+[MIT](LICENSE)</b>
+</div>
 <div align="center">
   <img src="./public/footer.png" />
   <em>made with ❤️ by <a href="https://github.com/sakfi">SakFi</a></em>
