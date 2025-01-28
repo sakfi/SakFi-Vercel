@@ -111,32 +111,10 @@ Live demo at [SakFi's OneDrive](https://sakfi.vercel.app).
 
 > **Note**: This project is focused on showcasing and providing a way for others to download files from your OneDrive. Emphasis on **free** and **serverless**. If you have your own server / need WebDAV / use cloud providers other than OneDrive, checkout [alist](https://github.com/alist-org/alist).
 
-## Documentation
-
-Documentation is hosted at [ovi.swo.moe](https://ovi.swo.moe/).
-
-- [How can I get started and deploy?](https://ovi.swo.moe/docs/getting-started)
-- [How can I configure ... ?](https://ovi.swo.moe/docs/custom-configs)
-- Where is feature ... ?
-  - [Docs - Password protected folders](https://ovi.swo.moe/docs/features/protected-folders)
-  - [Docs - Multi-file and folder download](https://ovi.swo.moe/docs/features/multi-file-folder-download)
-  - [Docs - Hosting files (images) directly](https://ovi.swo.moe/docs/features/hosting-images-directly)
-  - [Docs - Search for files and folders](https://ovi.swo.moe/docs/features/search-for-files-and-folders)
-  - [Docs - Load video subtitles](https://ovi.swo.moe/docs/features/load-video-subtitles)
-- [I deployed this before, how can I upgrade to the latest version?](https://ovi.swo.moe/docs/migration/updating-to-latest-version)
-- [I was here before 2022, how can I migrate to the new version?](https://ovi.swo.moe/docs/migration/if-you-deployed-before-2022)
-- [I got a problem during deployment ...](https://ovi.swo.moe/docs/faqs/error-on-deployment)
-- I didn't find a solution / My problem is unique? [Find help in discussion forum](https://github.com/spencerwooo/onedrive-vercel-index/discussions).
 
 ## Server-*less* (free)?
 
 Yes! Completely free with no backend server what-so-ever. (Well, we use Redis, but that's free to some extent also.)
-
-## Sponsors and donations
-
-Open-source is hard! If you happen to like this project and want me to keep going, please consider sponsoring me or providing a single donation! Thanks for all the love and support!
-
-[🧸 Please donate - 微信/支付宝](https://ovi.swo.moe/sponsor/ways) · [Patreon](https://www.patreon.com/spencerwoo) · [爱发电](https://afdian.net/@spencerwoo)
 
 ## License
 
