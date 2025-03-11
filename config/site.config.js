@@ -47,6 +47,8 @@ module.exports = {
   "/🥟 Some test files/Protected route",
    "/Index/PGD-GB Batch 2",
    "/PGD-GB Batch 2",
+   "/BBA DOCS",
+   "/Index/BBA DOCS",
 ],
   // [OPTIONAL] Use "" here if you want to remove this email address from the nav bar.
   email: 'mailto:DaRk@sakfi.onmicrosoft.com',
