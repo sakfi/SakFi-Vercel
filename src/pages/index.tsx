@@ -1,6 +1,7 @@
 import Layout from '../components/Layout'
 import Image from 'next/image'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
 type Folder = {
@@ -75,13 +76,12 @@ export default function Home() {
           </div>
           <h1 className="text-3xl font-bold text-white">DaRk World</h1>
           <div className="absolute right-0">
-            <a
-              href="/legacy"
-              className="inline-flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-500 transition"
-            >
-              <Image src="/icons/64.png" alt="Legacy" width={20} height={20} />
-              <span>Legacy View</span>
-            </a>
+            <Link href="/legacy" legacyBehavior passHref>
+              <a className="inline-flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-500 transition">
+                <Image src="/icons/64.png" alt="Legacy" width={20} height={20} />
+                <span>Legacy View</span>
+              </a>
+            </Link>
           </div>
         </div>
 
