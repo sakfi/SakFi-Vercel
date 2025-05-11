@@ -396,7 +396,7 @@ const FileListing: FC<{ query?: ParsedUrlQuery }> = ({ query }) => {
     if (previewType) {
       switch (previewType) {
         case preview.image:
-          return <ImagePreview loading="lazy" file={file} />;
+          return <ImagePreview file={file} />;
 
         case preview.text:
           return <TextPreview file={file} />
