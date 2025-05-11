@@ -56,7 +56,7 @@ export const DownloadButton = ({
       onClick={onClickCallback}
     >
       {btnIcon && <FontAwesomeIcon icon={btnIcon} />}
-      {btnImage && <Image src={btnImage} alt={btnImage} width={20} height={20} priority />}
+      {btnImage && <Image loading="lazy" src={btnImage} alt={btnImage} width={20} height={20} priority />}
       <span>{btnText}</span>
     </button>
   )

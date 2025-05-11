@@ -35,7 +35,7 @@ export default function OAuthStep2() {
         <div className="mx-auto w-full max-w-5xl p-4">
           <div className="rounded bg-white p-3 dark:bg-gray-900 dark:text-gray-100">
             <div className="mx-auto w-52">
-              <Image
+              <Image loading="lazy"
                 src="/images/fabulous-come-back-later.png"
                 width={912}
                 height={912}

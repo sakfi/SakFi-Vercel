@@ -1,22 +1,15 @@
-const { i18n } = require('./next-i18next.config');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 
-module.exports = {
-  i18n,
+module.exports = withBundleAnalyzer({
   reactStrictMode: true,
+  images: {
+    unoptimized: true,
+  },
   trailingSlash: true,
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.externals = config.externals || {};
-      config.externals['plyr'] = 'commonjs plyr'; // Mock plyr on server-side
-    }
-    return config;
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
   },
-  async rewrites() {
-    return [
-      {
-        source: '/sitemap.xml',
-        destination: '/sitemap',
-      },
-    ];
-  },
-};
+})

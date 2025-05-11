@@ -4,6 +4,7 @@ import '../styles/markdown-github.css'
 
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Layout from '../components/Layout' // ✅ added
 
 // Require had to be used to prevent SSR failure in Next.js
 // Related discussion: https://github.com/FortAwesome/Font-Awesome/issues/19348
@@ -67,7 +68,6 @@ import type { AppProps } from 'next/app'
 import NextNProgress from 'nextjs-progressbar'
 import { appWithTranslation } from 'next-i18next'
 
-// Import all brand icons with tree-shaking so all icons can be referenced in the app
 const iconList = Object.keys(Icons)
   .filter(k => k !== 'fab' && k !== 'prefix')
   .map(icon => Icons[icon])
@@ -124,12 +124,12 @@ library.add(
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <Layout> {/* ✅ wrap applied here */}
       <NextNProgress height={1} color="rgb(156, 163, 175, 0.9)" options={{ showSpinner: false }} />
       <Analytics />
       <SpeedInsights />
       <Component {...pageProps} />
-    </>
+    </Layout>
   )
 }
 
