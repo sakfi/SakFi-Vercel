@@ -64,18 +64,18 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white p-6 animate-fade-in">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 sm:px-6 lg:px-8 py-6 animate-fade-in">
         <Head>
           <title>DaRk World</title>
           <meta name="description" content="Private media library for movies, tutorials, and PDF books." />
         </Head>
 
-        <div className="relative mb-6 flex items-center justify-center">
-          <div className="absolute left-0">
+        <div className="relative mb-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
+          <div className="sm:absolute sm:left-0">
             <Image loading="lazy" src="/icons/64.png" alt="Logo" width={40} height={40} />
           </div>
           <h1 className="text-3xl font-bold text-white">DaRk World</h1>
-          <div className="absolute right-0">
+          <div className="sm:absolute sm:right-0">
             <Link href="/legacy" legacyBehavior passHref>
               <a className="inline-flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-blue-500 transition">
                 <Image src="/icons/64.png" alt="Legacy" width={20} height={20} />
@@ -101,7 +101,7 @@ export default function Home() {
                   setSortBy(key as 'name' | 'size' | 'updated')
                   setSortOrder(o => (sortBy === key && o === 'asc' ? 'desc' : 'asc'))
                 }}
-                className={`px-3 py-1 rounded ${
+                className={`px-4 py-2 min-w-[44px] text-sm sm:text-base rounded ${
                   sortBy === key ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-300'
                 } hover:bg-blue-500`}
               >
@@ -130,14 +130,14 @@ export default function Home() {
                   <td className="px-4 py-3">
                     <a href={folder.href} className="flex items-center space-x-2 font-medium text-white hover:underline">
                       <span className="text-xl">{folder.icon}</span>
-                      <span>{folder.name}</span>
+                      <span className="text-base sm:text-lg">{folder.name}</span>
                     </a>
                   </td>
                   <td className="px-4 py-3 text-gray-400">{folder.updated}</td>
                   <td className="px-4 py-3 text-gray-400">{folder.size}</td>
                   <td className="px-4 py-3 space-x-4 text-lg text-gray-400">
-                    <a href={folder.href}><span title="Copy Link">🔗</span></a>
-                    <a href={folder.href}><span title="Download">⬇️</span></a>
+                    <a href={folder.href} className="inline-block p-2" title="Copy Link">🔗</a>
+                    <a href={folder.href} className="inline-block p-2" title="Download">⬇️</a>
                   </td>
                 </tr>
               ))}
