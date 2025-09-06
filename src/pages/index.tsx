@@ -12,6 +12,20 @@ type Folder = {
   href: string
 }
 
+// Convert size in bytes → human readable string
+function formatSize(bytes: number): string {
+  if (!bytes) return '—'
+  const units = ['B', 'KB', 'MB', 'GB', 'TB']
+  let i = 0
+  let num = bytes
+  while (num >= 1024 && i < units.length - 1) {
+    num /= 1024
+    i++
+  }
+  return `${num.toFixed(2)} ${units[i]}`
+}
+
+// Parse size back into number (for sorting)
 function parseSize(size: string) {
   const units = { B: 1, KB: 1024, MB: 1024 ** 2, GB: 1024 ** 3, TB: 1024 ** 4 }
   const match = size.match(/([\d.]+)\s?(B|KB|MB|GB|TB)/i)
@@ -20,7 +34,7 @@ function parseSize(size: string) {
   return parseFloat(num) * (units[unit.toUpperCase()] || 1)
 }
 
-// Assign icons based on folder name
+// Pick icons based on folder name
 function getIconForFolder(name: string): string {
   const lower = name.toLowerCase()
   if (lower.includes('movie')) return '🎬'
@@ -44,15 +58,15 @@ export default function Home() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch('/api?path=/') // adjust if needed
+        const res = await fetch('/api?path=/') // adjust if your API differs
         const data = await res.json()
 
-        const mapped: Folder[] = data.children
-          .filter((item: any) => item.folder) // show only folders
+        const mapped: Folder[] = data.folder.value
+          .filter((item: any) => item.folder) // only folders
           .map((item: any) => ({
             name: item.name,
             icon: getIconForFolder(item.name),
-            size: item.size ? item.size : '—',
+            size: formatSize(item.size),
             updated: item.lastModifiedDateTime
               ? new Date(item.lastModifiedDateTime).toISOString().slice(0, 10)
               : '',
@@ -69,13 +83,13 @@ export default function Home() {
     fetchData()
   }, [])
 
-  // Debounce search
+  // Debounce search input
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(searchTerm), 300)
     return () => clearTimeout(handler)
   }, [searchTerm])
 
-  // Filtering + sorting
+  // Filter + sort folders
   const filteredFolders = useMemo(() => {
     let result = folders.filter(folder =>
       folder.name.toLowerCase().includes(debouncedSearch.toLowerCase())
@@ -153,7 +167,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Table of folders */}
+        {/* Folder Table */}
         <div className="overflow-x-auto">
           {loading ? (
             <p className="text-gray-400">Loading folders…</p>
