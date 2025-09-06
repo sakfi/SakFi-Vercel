@@ -20,27 +20,62 @@ function parseSize(size: string) {
   return parseFloat(num) * (units[unit.toUpperCase()] || 1)
 }
 
+// Assign icons based on folder name
+function getIconForFolder(name: string): string {
+  const lower = name.toLowerCase()
+  if (lower.includes('movie')) return '🎬'
+  if (lower.includes('series')) return '📺'
+  if (lower.includes('tutorial')) return '📖'
+  if (lower.includes('book') || lower.includes('pdf')) return '📚'
+  if (lower.includes('bba')) return '🎓'
+  if (lower.includes('pgd')) return '🧾'
+  return '📁'
+}
+
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [sortBy, setSortBy] = useState<'name' | 'size' | 'updated'>('name')
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [folders, setFolders] = useState<Folder[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const folders: Folder[] = useMemo(() => [
-    { name: 'BBA DOCS', icon: '🎓', size: '1.24 GB', updated: '2025-03-11', href: '/BBA DOCS' },
-    { name: 'Latest Movies (Hall Print)', icon: '🎬', size: '49.9 GB', updated: '2025-01-11', href: '/Latest Movies (Hall Print)' },
-    { name: 'Movies', icon: '🎥', size: '740 GB', updated: '2024-12-02', href: '/Movies' },
-    { name: 'PDF Books', icon: '📚', size: '85.8 GB', updated: '2025-02-03', href: '/PDF Books' },
-    { name: 'PGD-GB Batch 2', icon: '🧾', size: '496 MB', updated: '2024-12-10', href: '/PGD-GB Batch 2' },
-    { name: 'Series', icon: '📺', size: '2.86 TB', updated: '2024-12-02', href: '/Series' },
-    { name: 'Tutorials', icon: '📖', size: '184 GB', updated: '2025-01-06', href: '/Tutorials' },
-  ], [])
+  // Fetch live data
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch('/api?path=/') // adjust if needed
+        const data = await res.json()
 
+        const mapped: Folder[] = data.children
+          .filter((item: any) => item.folder) // show only folders
+          .map((item: any) => ({
+            name: item.name,
+            icon: getIconForFolder(item.name),
+            size: item.size ? item.size : '—',
+            updated: item.lastModifiedDateTime
+              ? new Date(item.lastModifiedDateTime).toISOString().slice(0, 10)
+              : '',
+            href: '/' + encodeURIComponent(item.name),
+          }))
+
+        setFolders(mapped)
+      } catch (e) {
+        console.error('Failed to load folder data', e)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  // Debounce search
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(searchTerm), 300)
     return () => clearTimeout(handler)
   }, [searchTerm])
 
+  // Filtering + sorting
   const filteredFolders = useMemo(() => {
     let result = folders.filter(folder =>
       folder.name.toLowerCase().includes(debouncedSearch.toLowerCase())
@@ -49,6 +84,7 @@ export default function Home() {
     result.sort((a, b) => {
       let valA: number | string = a[sortBy]
       let valB: number | string = b[sortBy]
+
       if (sortBy === 'size') {
         valA = parseSize(a.size)
         valB = parseSize(b.size)
@@ -56,6 +92,7 @@ export default function Home() {
         valA = new Date(a.updated).getTime()
         valB = new Date(b.updated).getTime()
       }
+
       return ((valA > valB ? 1 : -1) * (sortOrder === 'asc' ? 1 : -1))
     })
 
@@ -67,9 +104,13 @@ export default function Home() {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 sm:px-6 lg:px-8 py-6 animate-fade-in">
         <Head>
           <title>DaRk World</title>
-          <meta name="description" content="Private media library for movies, tutorials, and PDF books." />
+          <meta
+            name="description"
+            content="Private media library for movies, tutorials, and PDF books."
+          />
         </Head>
 
+        {/* Header */}
         <div className="relative mb-6 flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
           <div className="sm:absolute sm:left-0">
             <Image loading="lazy" src="/icons/64.png" alt="Logo" width={40} height={40} />
@@ -85,6 +126,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Search + sort controls */}
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <input
             type="text"
@@ -111,38 +153,50 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Table of folders */}
         <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse">
-            <thead>
-              <tr className="text-left border-b border-gray-700">
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Last Modified</th>
-                <th className="px-4 py-2">Size</th>
-                <th className="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredFolders.map(folder => (
-                <tr
-                  key={folder.name}
-                  className="border-b border-gray-800 hover:bg-gray-800 transition duration-300 ease-in-out"
-                >
-                  <td className="px-4 py-3">
-                    <a href={folder.href} className="flex items-center space-x-2 font-medium text-white hover:underline">
-                      <span className="text-xl">{folder.icon}</span>
-                      <span className="text-base sm:text-lg">{folder.name}</span>
-                    </a>
-                  </td>
-                  <td className="px-4 py-3 text-gray-400">{folder.updated}</td>
-                  <td className="px-4 py-3 text-gray-400">{folder.size}</td>
-                  <td className="px-4 py-3 space-x-4 text-lg text-gray-400">
-                    <a href={folder.href} className="inline-block p-2" title="Copy Link">🔗</a>
-                    <a href={folder.href} className="inline-block p-2" title="Download">⬇️</a>
-                  </td>
+          {loading ? (
+            <p className="text-gray-400">Loading folders…</p>
+          ) : (
+            <table className="min-w-full table-auto border-collapse">
+              <thead>
+                <tr className="text-left border-b border-gray-700">
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Last Modified</th>
+                  <th className="px-4 py-2">Size</th>
+                  <th className="px-4 py-2">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredFolders.map(folder => (
+                  <tr
+                    key={folder.name}
+                    className="border-b border-gray-800 hover:bg-gray-800 transition duration-300 ease-in-out"
+                  >
+                    <td className="px-4 py-3">
+                      <a
+                        href={folder.href}
+                        className="flex items-center space-x-2 font-medium text-white hover:underline"
+                      >
+                        <span className="text-xl">{folder.icon}</span>
+                        <span className="text-base sm:text-lg">{folder.name}</span>
+                      </a>
+                    </td>
+                    <td className="px-4 py-3 text-gray-400">{folder.updated}</td>
+                    <td className="px-4 py-3 text-gray-400">{folder.size}</td>
+                    <td className="px-4 py-3 space-x-4 text-lg text-gray-400">
+                      <a href={folder.href} className="inline-block p-2" title="Copy Link">
+                        🔗
+                      </a>
+                      <a href={folder.href} className="inline-block p-2" title="Download">
+                        ⬇️
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </Layout>
